@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <h1>List Movies</h1>
+    <%= JSON.stringify(listMovies) %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Year</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < JSON.stringify(listMovies).length; i++) { %>
+        <tr>
+          <td><%= JSON.stringify(listMovies)[i].name %></td>
+          <td><%= JSON.stringify(listMovies)[i].year %></td>
+          <td><%= JSON.stringify(listMovies)[i].category %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </body>
+</html>
