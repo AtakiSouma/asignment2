@@ -1,0 +1,118 @@
+<!-- singleMovie.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= movie.name %></title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+    }
+    .main-body {
+      position: relative;
+    }
+    .main-body img {
+      z-index: -99;
+      opacity: 0.8;
+      width: 100%;
+      max-height: 100vh;
+      object-fit: cover;
+    }
+    .movie-info {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 500px;
+      width: 800px;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 10px;;
+    }
+    @media screen and (max-width: 768px) {
+      .movie-info {
+        max-width: 450px;
+        width: 100%;
+        height: 400px;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .movie-info {
+        max-width: 350px;
+        width: 100%;
+        height: 400px;
+      }
+    }
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      .movie-info {
+        max-width: 550px;
+        width: 100%;
+        height: 400px;
+      }
+    }
+    .left-content,
+    .right-content {
+      flex: 1; /* Each section takes up equal width */
+      overflow: hidden; /* Hide overflow to prevent content from overflowing */
+    }
+    .left-content {
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      
+    }
+    .left-content img {
+      border : 5px solid #ccc;
+      box-shadow: inset 0px 0px 0px 5px #a07d7d;
+      border-radius: 10px;;
+      margin: 0;
+      width:100%;
+      height:100%;
+      transform: scale(0.8);
+      object-fit: cover;
+    }
+    .right-content {
+      width:100%;
+      height:100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+    }
+    .right-content ul li {
+      text-decoration: none;
+      list-style: none;
+    }
+  </style>
+  <body>
+    <div class="main-body">
+      <img src="<%= movie.image%>" alt="<%= movie.titleImage%>" />
+      <div class="movie-info">
+        <div class="left-content">
+          <img src="<%= movie.image%>" alt="<%= movie.titleImage%>" />
+        </div>
+        <div class="right-content">
+          <ul>
+            <li><%= movie.name%></li>
+            <li><%= movie.language%></li>
+            <li>Year :  <%=movie.year%></li>
+            <li>Time :  <%=movie.time%>s</li>
+            <li>Rate: 5s <%=movie.rate%></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+    <h1><%= movie.name %></h1>
+    <p>Release Year: <%= movie.year %></p>
+    <p>Description: <%= movie.description %></p>
+    <img src="<%= movie.image%>" alt="<%= movie.titleImage%>" /> -->
+  </body>
+</html>

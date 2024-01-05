@@ -6,12 +6,11 @@ const CategoriesSchema = new Schema<ICategories>(
     title: {
       type: String,
       required: true,
-      unique: true,
+
     },
     slug: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   {

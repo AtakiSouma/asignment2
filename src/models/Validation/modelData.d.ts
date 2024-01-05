@@ -23,7 +23,6 @@ import { StringLiteral } from "typescript";
     video: string ;
     rate:number;
     status:boolean;
-    categorySlug: string
   }
 
   export interface ICategories {

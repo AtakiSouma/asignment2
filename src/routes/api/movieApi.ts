@@ -19,5 +19,7 @@ router.post("/single-slug", movieController.getASingleMovieBySlug);
 router.put("/", movieController.updateMovie);
 router.put("/status", movieController.updateStatusMovie);
 router.delete("/", movieController.deleteMovie);
+router.post("/import" , movieController.importMovie);
+router.post("/slug" , movieController.getASingleMovieBySlugWithoutInput)
 
 export default router;

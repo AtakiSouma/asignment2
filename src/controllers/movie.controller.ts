@@ -3,6 +3,7 @@ import {
   sendSuccessResponse,
   sendSuccessResponseBoolean,
   sendSuccessResponseCanNull,
+  sendSuccessResponseOnly,
   sendSuccessResponseString,
   sendSuccessResponseWithStatusCode,
 } from "../constants/successResponse";
@@ -34,9 +35,24 @@ import movieServices from "../services/movie.services";
 //  ----------------------------------------------------------------
 
 const movieController = {
-  // create movie
+  // import movie
   // METHOD POST
   // api/movie/create
+  importMovie: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const movies = await movieServices.importMovies();
+      return sendSuccessResponse(res, movies);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
   createMovie: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { input } = req.body;
@@ -45,7 +61,10 @@ const movieController = {
       if (error) {
         // throw generateError(`${error}`, HttpStatusCodes.BAD_REQUEST);
         if (error.name === "ValidationError") {
-          const validationError = new CustomError(`Validation Error: ${error.message}`, HttpStatusCodes.BAD_REQUEST);
+          const validationError = new CustomError(
+            `Validation Error: ${error.message}`,
+            HttpStatusCodes.BAD_REQUEST
+          );
           next(validationError);
         } else {
           throw generateError(`Error: ${error}`, HttpStatusCodes.BAD_REQUEST);
@@ -71,7 +90,8 @@ const movieController = {
   // api/movie/
   getAllMovies: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const allMovie = await movieServices.getAllMovies();
+      const  input  = req.body.searchQuery;
+      const allMovie = await movieServices.getAllMovies(input);
       return sendSuccessResponse(res, allMovie);
     } catch (error) {
       console.log(error);
@@ -88,11 +108,15 @@ const movieController = {
   //get a single movie
   // METHOD GET
   // api/movie/{id}
-  getASingleMovieById: async (req: Request, res: Response, next: NextFunction) => {
+  getASingleMovieById: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { input } = req.body;
-      if(!input){
-        throw generateError("Input is invalid" , HttpStatusCodes.NOT_FOUND);
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
       }
       const singleMovie = await movieServices.getASingleMovieById(input);
       return sendSuccessResponse(res, singleMovie);
@@ -108,16 +132,44 @@ const movieController = {
     }
   },
 
-   //get a single movie
+  //get a single movie
   // METHOD GET
   // api/movie/{slug}
-  getASingleMovieBySlug: async (req: Request, res: Response, next: NextFunction) => {
+  getASingleMovieBySlug: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { input } = req.body;
-      if(!input){
-        throw generateError("Input is invalid" , HttpStatusCodes.NOT_FOUND);
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
       }
       const singleMovie = await movieServices.getMovieBySlug(input);
+      return sendSuccessResponse(res, singleMovie);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+
+  getASingleMovieBySlugWithoutInput: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const input = req.body.slug;
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
+      }
+      const singleMovie = await movieServices.getMovieBySlugWithoutInput(input);
       return sendSuccessResponse(res, singleMovie);
     } catch (error) {
       console.log(error);
@@ -137,8 +189,8 @@ const movieController = {
   updateMovie: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { input } = req.body;
-      if(!input){
-        throw generateError("Input is invalid" , HttpStatusCodes.NOT_FOUND);
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
       }
       const updateMovie = await movieServices.updateMovie(input);
       return sendSuccessResponse(res, updateMovie);
@@ -160,8 +212,8 @@ const movieController = {
   deleteMovie: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { input } = req.body;
-      if(!input){
-        throw generateError("Input is invalid" , HttpStatusCodes.NOT_FOUND);
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
       }
       const updateMovie = await movieServices.deleteMovie(input);
       return sendSuccessResponseWithStatusCode(res, updateMovie);
@@ -179,11 +231,15 @@ const movieController = {
   // delete movie by status
   // METHOD PUT
   // api/movie/update-status
-  updateStatusMovie: async (req: Request, res: Response, next: NextFunction) => {
+  updateStatusMovie: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { input } = req.body;
-      if(!input){
-        throw generateError("Input is invalid" , HttpStatusCodes.NOT_FOUND);
+      if (!input) {
+        throw generateError("Input is invalid", HttpStatusCodes.NOT_FOUND);
       }
       const updateMovie = await movieServices.updateStatusMovie(input);
       return sendSuccessResponseBoolean(res, updateMovie);

@@ -35,11 +35,6 @@ const movieSchema = new Schema<IMovies>(
       ref: "Categories",
       required: true,
     },
-    categorySlug: {
-      unique: true,
-      type: String,
-      required: true,
-    },
     language: {
       type: String,
       required: true,

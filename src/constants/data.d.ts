@@ -6,6 +6,10 @@ export interface UserSchema {
   email: string;
 
 }
+export interface searchQueryInput {
+title: string;
+
+}
 export interface UserInput{
     username: string;
     email: string;

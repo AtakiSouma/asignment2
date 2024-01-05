@@ -43,6 +43,10 @@ class userServices {
     });
     return new_user;
   }
+  public async listUser() {
+    const user = await User.find();
+    return user;
+  }
 }
 
 export default new userServices();
