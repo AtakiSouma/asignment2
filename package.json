@@ -7,7 +7,6 @@
     "build:css": "postcss src/public/styles/tailwind.css -o src/public/styles/styles.css",
     "build": "",
     "lint": "eslint . --ext .ts",
-    "test": "jasmine",
     "dev": "nodemon --exec ts-node-dev src/index.ts",
     "start": "ts-node src/index.ts"
   },
