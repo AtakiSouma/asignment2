@@ -5,7 +5,7 @@ const CategoriesSchema = new Schema<ICategories>(
   {
     title: {
       type: String,
-      required: true,
+      required: true ,
 
     },
     slug: {

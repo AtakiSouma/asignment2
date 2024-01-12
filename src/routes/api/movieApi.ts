@@ -4,7 +4,7 @@ import middlewareController from "../../middlewares/verifyToken.middlewares";
 const router = express.Router();
 
 // router.post("/create",middlewareController.verifyToken, middlewareController.requestRefresh, movieController.createMovie);
-// router.get("/" , middlewareController.requestRefresh,middlewareController.verifyToken ,movieController.getAllMovies);
+router.get("/" ,middlewareController.verifyToken , middlewareController.requestRefresh ,movieController.getAllMovies);
 // router.post("/single-id", middlewareController.verifyToken, middlewareController.requestRefresh, movieController.getASingleMovieById);
 // router.post("/single-slug" , middlewareController.verifyToken, middlewareController.requestRefresh, movieController.getASingleMovieBySlug);
 // router.put("/" , middlewareController.requestRefresh,middlewareController.verifyToken , movieController.updateMovie);
@@ -13,7 +13,7 @@ const router = express.Router();
 
 /// not authencated
 router.post("/create", movieController.createMovie);
-router.get("/", movieController.getAllMovies);
+// router.get("/", movieController.getAllMovies);
 router.post("/single-id", movieController.getASingleMovieById);
 router.post("/single-slug", movieController.getASingleMovieBySlug);
 router.put("/", movieController.updateMovie);

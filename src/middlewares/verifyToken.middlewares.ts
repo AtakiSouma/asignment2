@@ -34,7 +34,7 @@ const middlewareController = {
       console.log("token from cookie: ", token);
       const tokenisExpired = jwtServices.isTokenExpired(token);
       if (tokenisExpired) {
-        authServices.requestRefreshToken(req, res , token , uid);
+        authServices.newToken(uid , token);
         next();
       } else {
         next();

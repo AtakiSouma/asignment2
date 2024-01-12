@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { tokenGenerate } from "../constants/data";
 import { generateError } from "../libs/handlers/errorsHandlers";
 import HttpStatusCodes from "../constants/HttpStatusCodes";
-import {Request} from "express";
+import { Request } from "express";
 class JwtServices {
   public generatePairToken(input: tokenGenerate) {
     const secret_key =
@@ -15,7 +15,7 @@ class JwtServices {
     });
     const refreshToken = jwt.sign(input, secret_key, {
       subject: input.id,
-      expiresIn: 60*60* 10000,
+      expiresIn: 60 * 60 * 10000,
       algorithm: "HS256",
     });
     return { accessToken, refreshToken };
@@ -32,26 +32,33 @@ class JwtServices {
     }
   }
   public getUidFromCookie(req: Request) {
-    const uid = req.header('uid');
+    const uid = req.header("uid");
     if (!uid) {
-      throw generateError('You are not authenticated', HttpStatusCodes.UNAUTHORIZED);
+      throw generateError(
+        "You are not authenticated",
+        HttpStatusCodes.UNAUTHORIZED
+      );
     }
     return uid;
   }
   public isTokenExpired(token: string) {
-    try{
+    try {
       const secret_key =
-      process.env.SECRET_KEY || "rvGx7efcLKUVL6uK8MgR7X6cpFLUP9vg";
+        process.env.SECRET_KEY || "rvGx7efcLKUVL6uK8MgR7X6cpFLUP9vg";
+      const decodedToken: any = jwt.verify(token, secret_key);
 
-      const decodedToken:any = jwt.verify(token,secret_key);
-      // check expired
-      if(decodedToken && decodedToken.exp && decodedToken.exp > Date.now() / 1000){
-        return false;
+      if (decodedToken) {
+        const currentTimeInSeconds = Date.now() / 1000;
+
+        if (decodedToken.exp && decodedToken.exp > currentTimeInSeconds) {
+          return false;
+        }
       }
-      return true
-    }catch(error){
+
+      return true;
+    } catch (error) {
       return true;
     }
   }
 }
-export default  new JwtServices();
+export default new JwtServices();

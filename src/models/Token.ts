@@ -14,6 +14,7 @@ const tokenSchema = new Schema<ITokens>(
       type: String,
       required: true,
     },
+    
   },
   {
     timestamps: true,

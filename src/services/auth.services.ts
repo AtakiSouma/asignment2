@@ -59,6 +59,8 @@ class AuthService {
     const { accessToken, refreshToken } =
       jwtServices.generatePairToken(tokenGenerate);
     this.setRefreshToken(res, refreshToken, user.id);
+    this.setRefreshTokenInDB(user.id, refreshToken);
+
     return this.generateResponse(tokenGenerate, accessToken, refreshToken);
   }
   public async login(input: loginInput, res: Response) {
@@ -98,10 +100,31 @@ class AuthService {
   }
   private async setRefreshTokenInDB(userId: string, refreshToken: string) {
     try {
-      await Token.findOneAndUpdate({ user: userId }, { token: refreshToken });
+      const user = await User.findOne({ _id: userId });
+
+      if (!user) {
+        throw generateError(
+          "User is not logged in",
+          HttpStatusCodes.UNAUTHORIZED
+        );
+      }
+
+      const existingToken = await Token.findOne({ user: userId });
+
+      if (existingToken) {
+        // If the user already has a token, update it
+        existingToken.token = refreshToken;
+        await existingToken.save();
+      } else {
+        // If the user doesn't have a token, create a new one
+        await Token.create({
+          user: userId,
+          token: refreshToken,
+        });
+      }
     } catch (error) {
       throw generateError(
-        "Error Saving refresh token",
+        "Error saving refresh token",
         HttpStatusCodes.INTERNAL_SERVER_ERROR
       );
     }
