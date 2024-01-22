@@ -7,7 +7,7 @@ export const connectDB = async () => {
       console.error("MongoDB connection URL is not provided.");
       process.exit(1);
     } else {
-      await mongoose.connect("mongodb+srv://hoangnam1772004:01685835912nam@cluster0.6rbaew5.mongodb.net/SDN301m?retryWrites=true&w=majority", {
+      await mongoose.connect(mongodb_url, {
         // useNewUrlParser: true,
         // useUnifiedTopology: true,
       });

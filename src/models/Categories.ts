@@ -1,16 +1,30 @@
-import mongoose, { Schema, model } from "mongoose";
-import { ICategories } from "./Validation/modelData";
+import mongoose, { Schema } from "mongoose";
+import joi from "joi";
 
+ export interface ICategories {
+  name: string;
+  slug: string;
+  description: string;
+  status: boolean;
+}
 const CategoriesSchema = new Schema<ICategories>(
   {
-    title: {
+    name: {
       type: String,
-      required: true ,
-
+      required: true,
     },
     slug: {
       type: String,
       required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: Boolean,
+      default: true,
     },
   },
   {
@@ -18,6 +32,7 @@ const CategoriesSchema = new Schema<ICategories>(
   }
 );
 export const Categories = mongoose.model<ICategories>(
-  "Categories",
-  CategoriesSchema
-);
+    "Categories",
+    CategoriesSchema
+  );
+  

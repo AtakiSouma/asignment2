@@ -1,12 +1,12 @@
 import { Response } from "express";
 import HttpStatusCodes from "./HttpStatusCodes";
 
-export const sendSuccessResponse = (res: Response, data: object | null) => {
-  return res.status(200).json({ success: true, data });
+export const sendSuccessResponse = (res: Response, status: HttpStatusCodes , data: object | undefined) => {
+  return res.status(200).json({ success: true, status , data });
 };
 
-export const sendSuccessResponseWithStatusCode = (res: Response, data: HttpStatusCodes) => {
-  return res.status(200).json({ success: true, data });
+export const sendSuccessResponseWithStatusCode = (res: Response, status: HttpStatusCodes) => {
+  return res.status(200).json({ success: true, status });
 };
 export const sendSuccessResponseBoolean = (
   res: Response,

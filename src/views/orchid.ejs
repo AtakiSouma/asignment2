@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="http://localhost:8080/css/orchid.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('header.ejs'); -%>
+
+    <div class="container">
+      <div class="orchid-items">
+        <% orchid.forEach((data,index) => { %>
+        <div class="custom-grid">
+          <div class="items-all">
+            <div class="orchid-item">
+              <a href="orchid/<%=data.slug%>">
+                <image src="<%=data.image %>" 
+                  />
+              </a>
+             
+              <div class="star-icon">
+                <i class="fa-sharp fa-solid fa-star"></i>
+              </div>
+            </div>
+            <div class="orchid-name"><%= data.name%></div>
+            <div class="orchid-category"><%= data.category.name%></div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </body>
+</html>

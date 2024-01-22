@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="http://localhost:8080/css/addNew.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('header.ejs'); -%>
+    <div class="container">
+      <div class="orchid-add-form">
+        <form
+          method="POST"
+          enctype="multipart/form-data"
+          onsubmit="uploadOrchid(event)"
+          id="orchidForm"
+        >
+          <!-- Name -->
+          <label> Name </label>
+          <input type="text" name="name" placeholder="Enter the name" />
+          <!-- Image -->
+          <label> Images </label>
+          <input type="text" name="image" placeholder="Enter the image" />
+          <!-- Back ground Images -->
+          <label>Back ground</label>
+          <input type="text" name="background" placeholder="Enter the image" />
+          <!-- Nation -->
+          <label>Nation</label>
+          <input type="text" name="nation" />
+          <!-- RealseDate -->
+          <label>release_date</label>
+          <input type="date" name="release_date" />
+          <!-- revenue -->
+          <label>revenue</label>
+          <input type="text" name="revenue" />
+          <!-- rating -->
+          <label>rating</label>
+          <input type="text" name="rating" />
+          <!-- development -->
+          <label>development</label>
+          <input type="text" name="development" />
+          <!-- category -->
+          <label>Category</label>
+          <select name="category" id="category">
+            <% categories.forEach((data,index) => { %>
+            <option value="<%=data._id%>"><%= data.name%></option>
+            <% }); %>
+          </select>
+          <button type="submit " style="width: 100px">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      async function uploadOrchid(event) {
+        event.preventDefault();
+        const form = document.getElementById("orchidForm");
+        const formData = {
+          name: form.elements["name"].value,
+          image: form.elements["image"].value,
+          background: form.elements["background"].value,
+          nation: form.elements["nation"].value,
+          release_date: form.elements["release_date"].value,
+          revenue: form.elements["revenue"].value,
+          rating: form.elements["rating"].value,
+          development: form.elements["development"].value,
+          category: form.elements["category"].value,
+        };
+        try {
+          // Make a POST request to your backend API
+          const response = await fetch("http://localhost:8080/api/orchids/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify(formData),
+          });
+
+          if (response.ok) {
+            console.log("Orchid added successfully!");
+          } else {
+            console.error("Failed to add orchid:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      }
+    </script>
+  </body>
+</html>

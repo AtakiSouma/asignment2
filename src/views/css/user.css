@@ -328,3 +328,8 @@ thead th.active,tbody td.active {
     width: 2rem;
     height: auto;
 }
+
+.hello {
+    color: red ;
+    text-decoration: underline;
+}

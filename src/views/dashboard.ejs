@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="http://localhost:8080/css/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include('header.ejs'); -%>
+    <div class="container">
+      <div class="table-css">
+        <!-- table design -->
+        <div class="table">
+          <div class="table_header">
+            <div class="film-header">
+              <div class="content">Game DashBoard</div>
+            </div>
+            <div class="left-content">
+              <form id="">
+                <input
+                  type="text"
+                  id="search"
+                  name="search"
+                  placeholder="Find Games...."
+                />
+              </form>
+              <div class="add_new_btn">
+                <button class="add_new" onclick="redirectToaddNew()">
+                  + Add New
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table_section">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Nation</th>
+                <th>Revenue</th>
+                <th>Ratings</th>
+                <th>Development</th>
+                <th>Category</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orchid.forEach((data,index) => { %>
+              <tr>
+                <td><%= index + 1%></td>
+                <!---- img-->
+                <td>
+                  <img src="<%= data.image %>" />
+                </td>
+                <td><%= data.name %></td>
+                <td><%= data.nation %></td>
+                <td><%= data.revenue %></td>
+                <td><%= data.rating %></td>
+                <td><%= data.development %></td>
+                <td><%= data.category.name%></td>
+                <!----modal -->
+                <div class="popup" id="popup<%= index %>">
+                  <header>
+                    <span>Delete Modal </span>
+                    <div class="close" onclick="toggleModal('<%= index %>')">
+                      <i class="uil uil-times"></i>
+                    </div>
+                  </header>
+                  <div class="content">
+                    <div class="text">Do you want to delete this Game ?</div>
+                    <div class="btn-button">
+                      <button
+                        class="yes"
+                        onclick="deleteOrchid('<%= data.slug %>')"
+                      >
+                        Yes
+                      </button>
+                      <button class="no" onclick="toggleModal('<%= index %>')">
+                        No
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!----modal -->
+                <td>
+                  <a
+                  href="/update/<%=data.slug%>"
+                  >
+                    <button><i class="fas fa-edit"></i></button>
+
+                  </a>
+                  <button class="view-modal">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- table design-->
+      </div>
+    </div>
+    <div id="snackbar">Delete successfully</div>
+
+    <script>
+      function redirectToaddNew() {
+        window.location.href = "/addNew";
+      }
+
+      async function deleteOrchid(slug) {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/api/orchids/${slug}`,
+            {
+              method: "DELETE",
+            }
+          );
+
+          if (response.ok) {
+            // Reload the page after a short delay
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+            showSuccessToast();
+
+          } else {
+            console.error("Failed to delete orchid:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      }
+
+      const viewBtns = document.querySelectorAll(".view-modal");
+      const popups = document.querySelectorAll(".popup");
+      const closeBtns = document.querySelectorAll(".close");
+      const noBtns = document.querySelectorAll(".no");
+      viewBtns.forEach((btn, index) => {
+        btn.onclick = () => {
+          popups[index].classList.toggle("show");
+        };
+      });
+
+      closeBtns.forEach((close, index) => {
+        close.onclick = () => {
+          popups[index].classList.remove("show");
+        };
+      });
+      noBtns.forEach((close, index) => {
+        close.onclick = () => {
+          popups[index].classList.remove("show");
+        };
+      });
+      // end handle modal
+
+      function showSuccessToast() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 4000);
+      }
+    </script>
+  </body>
+</html>

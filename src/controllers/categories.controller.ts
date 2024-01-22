@@ -1,38 +1,54 @@
 import { NextFunction, Request, Response } from "express";
+import CustomError, { generateError } from "../libs/handlers/errorsHandlers";
+import HttpStatusCodes from "../constants/HttpStatusCodes";
+import categoriesServices from "../services/categories.services";
 import {
   sendSuccessResponse,
   sendSuccessResponseBoolean,
-  sendSuccessResponseCanNull,
-  sendSuccessResponseString,
-  sendSuccessResponseOnly,
+  sendSuccessResponseWithStatusCode,
 } from "../constants/successResponse";
 
-import HttpStatusCodes from "../constants/HttpStatusCodes";
-import userServices from "../services/user.services";
-import CustomError, { generateError } from "../libs/handlers/errorsHandlers";
-import {
-  CategoriesSchemaValidate,
-  UsersSchemaValidate,
-} from "../models/Validation/validation";
-import categoriesServices from "../services/categories.services";
-
-const userController = {
+const CategoriesController = {
   createCategory: async (req: Request, res: Response, next: NextFunction) => {
     try {
-   const  { input }  = req.body
-      if (!input) {
+      const { name, description } = req.body;
+      if (!name || !description) {
+        throw generateError("Invalid input data", HttpStatusCodes.BAD_REQUEST);
+      }
+      const category = await categoriesServices.createNewCategories({
+        name,
+        description,
+      });
+     return sendSuccessResponse(res,HttpStatusCodes.OK, category);
+    } catch (error) {
+        console.log(error);
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+  updateCategoryById: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { id } = req.params;
+      const { name, description } = req.body;
+      if (!name || !description) {
         throw generateError("Input is invalid", HttpStatusCodes.BAD_REQUEST);
       }
-      //validating the request
-      const { error, value } = CategoriesSchemaValidate.validate(input);
-      if (error) {
-        throw generateError(`Error :  ${error}`, HttpStatusCodes.BAD_REQUEST);
-      } else {
-        const category = await categoriesServices.createNewCategory(value);
-        if (category) return sendSuccessResponse(res, category);
-      }
+      const updatedCategory = await categoriesServices.updateCategoriesById({
+        id,
+        name,
+        description,
+      });
+      if (updatedCategory) return sendSuccessResponse(res,  HttpStatusCodes.OK,updatedCategory);
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) {
         next(error);
       } else if (error instanceof Error) {
@@ -43,18 +59,25 @@ const userController = {
     }
   },
 
-  deleteCategory: async (req: Request, res: Response, next: NextFunction) => {
+  
+  updateCategoryBySlug: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      const { input } = req.body;
-      if (!input) {
-        throw generateError("Input is invalid", HttpStatusCodes.BAD_REQUEST);
+      const { slug } = req.params;
+      if(!slug){
+        throw generateError("Orchid not found" , HttpStatusCodes.NOT_FOUND)
       }
-   
-        await categoriesServices.deleteCategory(input);
-        return sendSuccessResponseOnly(res);
-    
+      const { name, description } = req.body;
+      const updatedCategory = await categoriesServices.updateCategoriesBySlug({
+        slug,
+        name,
+        description,
+      });
+      if (updatedCategory) return sendSuccessResponse(res, HttpStatusCodes.OK, updatedCategory);
     } catch (error) {
-      console.log(error);
       if (error instanceof CustomError) {
         next(error);
       } else if (error instanceof Error) {
@@ -65,19 +88,91 @@ const userController = {
     }
   },
 
-
-  deleteCategoryByIDD: async (req: Request, res: Response, next: NextFunction) => {
+  getOneCategoryById: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      const { input } = req.body;
-      if (!input) {
-        throw generateError("Input is invalid", HttpStatusCodes.BAD_REQUEST);
-      }
-   
-        await categoriesServices.deleteCategoryByID(input);
-        return sendSuccessResponseOnly(res);
-    
+      const { id } = req.params;
+      const Category = await categoriesServices.getOneCategoryById({ id });
+      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
     } catch (error) {
-      console.log(error);
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+
+  getOneCategoryBysLug: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { slug } = req.params;
+      const Category = await categoriesServices.getOneCategoryBySlug({ slug });
+      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+  deleteCategoriesSlug: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { slug } = req.params;
+      const Category = await categoriesServices.DeleteOneCategoryBySlug({
+        slug,
+      });
+      if (Category) return sendSuccessResponseWithStatusCode(res, HttpStatusCodes.OK);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+  deleteCategoriesId: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { id } = req.params;
+      const Category = await categoriesServices.DeleteOneCategoryById({ id });
+      if (Category) return sendSuccessResponseBoolean(res, Category);
+    } catch (error) {
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+  allCategories: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const Category = await categoriesServices.getAllCategories();
+
+      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
+    } catch (error) {
       if (error instanceof CustomError) {
         next(error);
       } else if (error instanceof Error) {
@@ -88,4 +183,5 @@ const userController = {
     }
   },
 };
-export default userController;
+
+export default CategoriesController;

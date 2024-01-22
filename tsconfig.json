@@ -104,12 +104,14 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "resolveJsonModule": true,
   },
   "include": [
     "src/**/*.ts",
     "src/index.ts",
-    "src/constants/successResponse.ts"
+    "src/constants/successResponse.ts",
+    "src/models/Orchids.ts"
   ],
   "exclude": ["node_modules"]
 }

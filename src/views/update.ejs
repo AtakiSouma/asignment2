@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="orchid-add-form">
+        <form
+          method="POST"
+          enctype="multipart/form-data"
+          onsubmit="updateOrchid(event)"
+          id="orchidForm"
+        >
+          <!-- Name -->
+          <label> Name </label>
+          <input type="text" name="name" value="<%=data.name%>" />
+          <!-- Image -->
+          <label> Images </label>
+          <img src="<%=data.image%>" style="width: 100px; height: 100px" />
+          <input type="text" name="image" value="<%= data.image%>" />
+
+          <!-- Back ground Images -->
+          <label>Back ground</label>
+          <img src="<%=data.background%>" style="width: 100px; height: 100px" />
+          <input type="text" name="background" value="<%= data.background%>" />
+          <!-- Nation -->
+          <label>Nation</label>
+          <input type="text" name="nation" value="<%= data.nation%>" />
+          <!-- RealseDate -->
+          <label>release_date</label>
+          <input
+            type="date"
+            name="release_date"
+            value="<%= data.release_date%>"
+          />
+          <!-- revenue -->
+          <label>revenue</label>
+          <input type="text" name="revenue" value="<%= data.revenue%>" />
+          <!-- rating -->
+          <label>rating</label>
+          <input type="text" name="rating" value="<%= data.rating%>" />
+          <!-- development -->
+          <label>development</label>
+          <input
+            type="text"
+            name="development"
+            value="<%= data.development%>"
+          />
+          <!---category -->
+          <label>Category</label>
+          <select name="category" id="category">
+            <option value="<%=data._id%>"><%= data.name%></option>
+          </select>
+          <button type="submit" style="width: 100px">Update</button>
+          <button style="width: 100px">Cancel</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      async function updateOrchid(event) {
+        event.preventDefault();
+        const form = document.getElementById("orchidForm");
+        const formData = {
+          name: form.elements["name"].value,
+          image: form.elements["image"].value,
+          background: form.elements["background"].value,
+          nation: form.elements["nation"].value,
+          release_date: form.elements["release_date"].value,
+          revenue: form.elements["revenue"].value,
+          rating: form.elements["rating"].value,
+          development: form.elements["development"].value,
+          category: form.elements["category"].value,
+        };
+        try {
+          // Make a POST request to your backend API
+          const response = await fetch(
+            "http://localhost:8080/api/orchids/<%=data.slug%>",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify(formData),
+            }
+          );
+
+          if (response.ok) {
+            console.log("Orchid added successfully!");
+          } else {
+            console.error("Failed to add orchid:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      }
+    </script>
+  </body>
+</html>
