@@ -31,12 +31,14 @@
               alt="anime"
               height="50"
               width="50"
+              onclick="redirectToHome()"
+              style="cursor: pointer;"
             />
             <!-- logo-->
             <!--- search-->
             <div class="middle-item">
               <ul>
-                <li>Home</li>
+               <a href="/" style="text-decoration: none ;color:black;;" ><li>Home</li></a> 
                 <li>About</li>
                 <li>Favorite</li>
                 <li>Contact</li>
@@ -59,13 +61,22 @@
             </div>
             <div class="Modal" id="modal">
               <div class="label-items">
-                <div class="label-item">Login</div>
-                <div class="label-item">Logout</div>
+                <div class="label-item">
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                <p> Login</p></div>
+                <div class="label-item">
+                  <i class="fa-solid fa-circle-left"></i>
+                 <p>Logout</p> </div>
                 <div class="label-item" onclick="redirectToDashboard()">
-                  DashBoard
+                  <i class="fa-solid fa-table-columns"></i>
+                  
+                  <p>DashBoard</p>
                 </div>
 
-                <div class="label-item">My Games</div>
+                <div class="label-item">
+                  <i class="fa-solid fa-gamepad"></i>
+               <p>  My Games</p> 
+                </div>
               </div>
             </div>
             <!--- use menu-->
@@ -82,6 +93,10 @@
         });
       function redirectToDashboard() {
         window.location.href = "/dashboard";
+      }
+      function redirectToHome(){
+        window.location.href = "/";
+
       }
     </script>
   </body>

@@ -4,11 +4,11 @@ import { Request, Response } from "express";
 import { data } from "autoprefixer";
 
 export function routeRender(app: express.Express) {
-  app.get("/", (req, res) => {
-    res.render("index.ejs");
-  });
+  // app.get("/", (req, res) => {
+  //   res.render("index.ejs");
+  // });
 
-  app.get("/orchid", async (req, res) => {
+  app.get("/", async (req, res) => {
     const response = await axios.get("http://localhost:8080/api/orchids/");
 
     const data_orchid = response.data.data;

@@ -13,14 +13,13 @@
       <div class="orchid-items">
         <% orchid.forEach((data,index) => { %>
         <div class="custom-grid">
-          <div class="items-all">
+          <div class="items-all skeleton">
             <div class="orchid-item">
               <a href="orchid/<%=data.slug%>">
-                <image src="<%=data.image %>" 
-                  />
+                <image src="<%=data.image %>" />
               </a>
-             
-              <div class="star-icon">
+
+              <div class="star-icon skeleton">
                 <i class="fa-sharp fa-solid fa-star"></i>
               </div>
             </div>
@@ -31,5 +30,13 @@
         <% }); %>
       </div>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const skeletonImage = document.getElementById("skeletonImage");
+
+        // Add the 'skeleton' class after the page has fully loaded
+        skeletonImage.classList.add("skeleton");
+      });
+    </script>
   </body>
 </html>

@@ -71,35 +71,37 @@
                 <td><%= data.development %></td>
                 <td><%= data.category.name%></td>
                 <!----modal -->
-                <div class="popup" id="popup<%= index %>">
-                  <header>
-                    <span>Delete Modal </span>
-                    <div class="close" onclick="toggleModal('<%= index %>')">
-                      <i class="uil uil-times"></i>
-                    </div>
-                  </header>
-                  <div class="content">
-                    <div class="text">Do you want to delete this Game ?</div>
-                    <div class="btn-button">
-                      <button
-                        class="yes"
-                        onclick="deleteOrchid('<%= data.slug %>')"
-                      >
-                        Yes
-                      </button>
-                      <button class="no" onclick="toggleModal('<%= index %>')">
-                        No
-                      </button>
+                <div class="overlay">
+                  <div class="popup" id="popup<%= index %>">
+                    <header>
+                      <span>Delete Modal </span>
+                      <div class="close" onclick="toggleModal('<%= index %>')">
+                        <i class="uil uil-times"></i>
+                      </div>
+                    </header>
+                    <div class="content">
+                      <div class="text">Do you want to delete this Game ?</div>
+                      <div class="btn-button">
+                        <button
+                          class="yes"
+                          onclick="deleteOrchid('<%= data.slug %>')"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          class="no"
+                          onclick="toggleModal('<%= index %>')"
+                        >
+                          No
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <!----modal -->
                 <td>
-                  <a
-                  href="/update/<%=data.slug%>"
-                  >
+                  <a href="/update/<%=data.slug%>">
                     <button><i class="fas fa-edit"></i></button>
-
                   </a>
                   <button class="view-modal">
                     <i class="fa-solid fa-trash"></i>
@@ -136,7 +138,6 @@
               window.location.reload();
             }, 1000);
             showSuccessToast();
-
           } else {
             console.error("Failed to delete orchid:", response.statusText);
           }

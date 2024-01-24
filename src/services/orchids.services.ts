@@ -114,7 +114,7 @@ class OrchidsServices {
   }
 
   public async getOneOrchid({ slug }: IParam) {
-    const Orchid = await Orchids.findOne({ slug: slug });
+    const Orchid = await Orchids.findOne({ slug: slug }).populate("category");
     if (!Orchid) {
       throw generateError("Orchid not found!", HttpStatusCodes.NOT_FOUND);
     }

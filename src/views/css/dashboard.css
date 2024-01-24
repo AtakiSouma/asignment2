@@ -37,7 +37,8 @@ button {
   color: #ffffff;
 }
 td button:nth-child(1) {
-  background-color: #0298cf;
+  background-color:  #265EAB
+;
 }
 td button:nth-child(2) {
   background-color: #f80000;
@@ -57,7 +58,8 @@ td button:nth-child(3):hover {
 .add_new {
   padding: 10px 20px;
   color: #ffffff;
-  background-color: #0298cf;
+  background-color:  #265EAB
+;
 }
 .add_new:hover {
   background-color: #41c4f4;
@@ -67,12 +69,15 @@ input {
   padding: 10px 20px;
   margin: 0 10px;
   outline: none;
-  border: 1px solid #0298cf;
+  border: 1px solid  #265EAB
+;
   border-radius: 6px;
-  color: #0298cf;
+  color:  #265EAB
+;
 }
 input::placeholder {
-  color: #0298cf;
+  color:  #265EAB
+;
 }
 .table_section {
   height: 400px;
@@ -90,7 +95,8 @@ thead th {
   position: sticky;
   top: 0;
   background-color: #f6f9fc;
-  color: #0298cf;
+  color:  #265EAB
+;
   font-size: 15px;
 }
 th,
@@ -101,7 +107,8 @@ td {
   text-align: center;
 }
 td::placeholder {
-  color: #0298cf;
+  color:  #265EAB
+;
 }
 td img {
   height: 60px;
@@ -111,12 +118,14 @@ td img {
   border: 5px solid #ced0d2;
 }
 tr:hover td {
-  color: #0298cf;
+  color:  #265EAB
+;
   cursor: pointer;
   background-color: #f6f9fc;
 }
 ::placeholder {
-  color: #0298cf;
+  color:  #265EAB
+;
 }
 .table::-webkit-scrollbar {
   width: 0.5rem;
@@ -143,7 +152,8 @@ tr:hover td {
   font-size: 22px;
 }
 span {
-  color: #0298cf;
+  color:
+  #265EAB;
   font-size: 30px;
   z-index: 2;
 }
@@ -152,7 +162,7 @@ span {
   background-color: rgb(240, 240, 240);
   z-index: 1;
   padding: 5px 9px;
-  border: 2px solid #0298cf;
+  border: 2px solid #265eab;
 }
 .left-content {
   display: flex;
@@ -196,6 +206,7 @@ button {
 }
 
 .popup {
+  z-index: 2;
   background: #fff;
   padding: 25px;
   border-radius: 15px;

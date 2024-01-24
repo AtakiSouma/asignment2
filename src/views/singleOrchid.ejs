@@ -4,18 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="http://localhost:8080/css/detail.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"
+    />
     <title>Document</title>
   </head>
   <body>
     <%- include('header.ejs'); -%>
     <div class="container-single">
-      <img src="   <%=data.background%>" />
-      <div class="details">
-        <div class="items">
-            <div class="card-poster">
-                <img src="   <%=data.image%>" />
+      <div class="detail-content">
+        <div class="detail-head">
+          <div class="title"><%=data.name%></div>
+          <div class="subTitle">
+            #<%=data.category.name%> , Best waifu games
+          </div>
+          <div class="head-image">
+            <img src="<%=data.background%>" />
+          </div>
+        </div>
+        <div class="detail-info">
+          <div class="info">
+            <div class="first-info">
+              <div class="development">
+                <div>Development: <span> <%=data.development%> </span></div>
+                <div><img src="<%=data.image%>" /></div>
+              </div>
+              <div class="revenue">
+                <div>Revenue : <%=data.revenue%>$</div>
+                <div>#1 Mobile Games</div>
+              </div>
             </div>
-        
+            <hr />
+            <div class="second-info">
+              <div class="category">
+                <img
+                  src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f028673d-f6b2-45d5-8989-de0d3d85b8fb/dg56vah-2237a310-e078-4321-b104-05daa6c3aa46.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2YwMjg2NzNkLWY2YjItNDVkNS04OTg5LWRlMGQzZDg1YjhmYlwvZGc1NnZhaC0yMjM3YTMxMC1lMDc4LTQzMjEtYjEwNC0wNWRhYTZjM2FhNDYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.nZyO1OWnkg6qfjgLtnl5gkTgI4ZwU7cLKD1OC_TKoIU"
+                />
+                <div style="display: flex; flex-direction: column">
+                  <div class="name"><%=data.category.name%></div>
+                  <div class="description"><%=data.category.description%></div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div
+              class="third-info"
+              style="display: flex; flex-direction: column; gap: 10px"
+            >
+              <div style="display: flex; flex-direction: row; gap:15px; align-items: center;"><span style="color: #6C22A6 ; font-weight: 700;"> Nation : </span><%=data.nation%>
+              
+                <% if (data.nation === "Korea") { %>
+                  <img style="width:80px ; height:40px ; border:1px solid black;;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/2560px-Flag_of_South_Korea.svg.png" alt="Flag of Korea" />
+                <% } %>
+                <% if (data.nation === "China") { %>
+                  <img style="width:80px ; height:40px ; border:1px solid black;;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/800px-Flag_of_the_People%27s_Republic_of_China.svg.png" alt="Flag of China" />
+                <% } %>
+                <% if (data.nation === "Japan") { %>
+                  <img style="width:80px ; height:40px ; border:1px solid black;;" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" alt="Flag of Japan" />
+                <% } %>
+
+              </div>
+              <div class="star-rating">
+                <span style="color: #6C22A6 ; font-weight: 700;"> Rating :  </span> <% for (let i = 1; i <= data.rating; i++) { %>
+                <span class="star">
+                  <i class="fa-solid fa-star"></i>
+                </span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <div class="info-sub">
+            <div class="poster">
+              <div class="name"><%=data.name%></div>
+              <div>
+                Realse Date :
+                <input type="datetime" value="<%=data.release_date%>" />
+              </div>
+              <img src="<%=data.image%>" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

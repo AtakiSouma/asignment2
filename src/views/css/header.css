@@ -129,14 +129,14 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-  width: 10%;
+  width: 48vw;
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   overflow: hidden;
   right: 20px;
   top: 80px;
   font-size: 14px;
-  line-height: 20px;
+  font-weight: 300;
 }
 .label-items {
   display: flex;
@@ -151,7 +151,10 @@
   transition-property: all;
   transition-duration: 0.5s;
   transition-timing-function: ease;
-  font-weight: 600;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  gap:15px;
 }
 .label-item:hover {
   --tw-bg-opacity: 1;
@@ -182,11 +185,12 @@
     --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
     transition-property: all;
-    background-color: rgb(148, 194, 139);
+    background-color: #265EAB;
     transition-duration: 0.5s;
     transition-timing-function: ease;
     border-radius: 9999px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color:#ffffff
 
 }
 @media (min-width: 1280px) {
@@ -204,6 +208,19 @@
   .content {
     gap: 0px;
   }
+  .Modal{
+    width: 20%;
+  }
+}
+@media (min-width: 1024px) {
+  .Modal{
+    width: 20%;
+  }
+}
+@media (min-width: 1280px) {
+  .Modal{
+    width: 15%;
+  }
 }
 @media (max-width: 768px) {
     
@@ -213,14 +230,6 @@
     .middle-item{
         display: none;
     }
-
-
     
-  }
-  @media (max-width: 900px) {
-    
-    .dashboard{
-        display: none;
-    }
   }
 

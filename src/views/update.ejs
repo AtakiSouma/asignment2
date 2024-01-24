@@ -3,70 +3,262 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="http://localhost:8080/css/addNew.css" />
+
     <title>Document</title>
   </head>
   <body>
-    <div class="container">
+    <%- include('header.ejs'); -%>
+    <div class="container-form">
       <div class="orchid-add-form">
+        <div class="Title">Update Games Information</div>
         <form
           method="POST"
           enctype="multipart/form-data"
           onsubmit="updateOrchid(event)"
           id="orchidForm"
         >
-          <!-- Name -->
-          <label> Name </label>
-          <input type="text" name="name" value="<%=data.name%>" />
-          <!-- Image -->
-          <label> Images </label>
-          <img src="<%=data.image%>" style="width: 100px; height: 100px" />
-          <input type="text" name="image" value="<%= data.image%>" />
+          <!--- Images-->
+          <div>
+            <div style="display: flex; flex-direction: column; gap: 20px">
+              <input
+                type="file"
+                accept="image/gif, image/jpeg, image/png"
+                name="image"
+                id="file"
+                style="display: none"
+                onchange="loadAndUploadFile(event)"
+              />
+              <div><p>Upload for images</p></div>
+              <div class="fileUpload">
+                <label for="file" style="cursor: pointer">
+                  <img
+                    src="https://www.svgrepo.com/show/309379/camera-add.svg"
+                    width="50px"
+                    height="50px"
+                    class="input-icon"
+                  />
+                </label>
+                <div class="fileResult">
+                  <img id="output" src="<%= data.image%>" />
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Back ground Images -->
-          <label>Back ground</label>
-          <img src="<%=data.background%>" style="width: 100px; height: 100px" />
-          <input type="text" name="background" value="<%= data.background%>" />
+          <div>
+            <div style="display: flex; flex-direction: column; gap: 20px">
+              <input
+                type="file"
+                accept="image/gif, image/jpeg, image/png"
+                name="image"
+                id="file-background"
+                style="display: none"
+                onchange="loadAndUploadFileBackground(event)"
+              />
+              <div><p>Upload for Background images</p></div>
+              <div class="fileUpload">
+                <label for="file-background" style="cursor: pointer">
+                  <img
+                    src="https://www.svgrepo.com/show/309379/camera-add.svg"
+                    width="50px"
+                    height="50px"
+                    class="input-icon"
+                  />
+                </label>
+                <div class="fileResult">
+                  <img id="background" src="<%= data.background%>" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Name -->
+          <div>
+            <label> Name </label>
+            <input type="text" name="name" value="<%=data.name%>" />
+          </div>
+          <!-- Image -->
+          <!-- <div>
+            <label> Images </label>
+            <div style="display: flex; gap: 20px">
+              <input type="text" name="image" value="<%= data.image%>" />
+              <img
+                src="<%= data.image%>"
+                style="width: 110px; height: 50px; border-radius: 10px"
+              />
+            </div>
+          </div> -->
+          <!-- Back ground Images -->
+          <!-- <div>
+            <label>Back ground</label>
+            <div  style="display: flex; gap: 20px">
+              <input
+                type="text"
+                name="background"
+                value="<%= data.background%>"
+              />
+              <img
+              src="<%= data.background%>"
+              style="width: 110px; height: 50px; border-radius: 10px"
+            />
+            </div>
+          </div> -->
           <!-- Nation -->
-          <label>Nation</label>
-          <input type="text" name="nation" value="<%= data.nation%>" />
+          <div>
+            <label>Nation</label>
+            <input type="text" name="nation" value="<%= data.nation%>" />
+          </div>
           <!-- RealseDate -->
-          <label>release_date</label>
-          <input
-            type="date"
-            name="release_date"
-            value="<%= data.release_date%>"
-          />
+          <div>
+            <label>release_date</label>
+            <input
+              type="date"
+              name="release_date"
+              value="<%= data.release_date%>"
+            />
+          </div>
           <!-- revenue -->
-          <label>revenue</label>
-          <input type="text" name="revenue" value="<%= data.revenue%>" />
+          <div>
+            <label>revenue</label>
+            <input
+              type="text"
+              name="revenue"
+              value="<%= data.revenue%>"
+              pattern="\d+"
+              oninput="setCustomValidity('')"
+              oninvalid="setCustomValidity('Please enter a valid number')"
+            />
+          </div>
           <!-- rating -->
-          <label>rating</label>
-          <input type="text" name="rating" value="<%= data.rating%>" />
+          <div>
+            <label>rating</label>
+            <input
+              type="text"
+              name="rating"
+              value="<%= data.rating%>"
+              pattern="\d+"
+              oninput="setCustomValidity('')"
+              oninvalid="setCustomValidity('Please enter a valid number')"
+            />
+          </div>
           <!-- development -->
-          <label>development</label>
-          <input
-            type="text"
-            name="development"
-            value="<%= data.development%>"
-          />
+          <div>
+            <label>development</label>
+            <input
+              type="text"
+              name="development"
+              value="<%= data.development%>"
+            />
+          </div>
           <!---category -->
-          <label>Category</label>
-          <select name="category" id="category">
-            <option value="<%=data._id%>"><%= data.name%></option>
-          </select>
-          <button type="submit" style="width: 100px">Update</button>
-          <button style="width: 100px">Cancel</button>
+          <div
+            class="category-input"
+            style="display: flex; flex-direction: column"
+          >
+            <label>Category</label>
+            <select name="category" id="category">
+              <option value="<%=data.category._id%>">
+                <%= data.category.name%>
+              </option>
+            </select>
+          </div>
+          <div>
+            <input type="hidden" />
+          </div>
+          <div style="display: flex; gap: 30px">
+            <button type="submit" style="width: 100px">Update</button>
+
+            <a href="/dashboard">
+              <button style="width: 100px; background-color: #878484">
+                Cancel
+              </button>
+            </a>
+          </div>
         </form>
       </div>
     </div>
+    <div id="snackbar-success">Update Orchid successfully</div>
+    <div id="snackbar-failed">Update Orchid Failed</div>
     <script>
+      let fileURL = "<%= data.image%>";
+      let fileURLBackGround = "<%= data.background%>";
+      async function loadAndUploadFileBackground(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          await fetch("http://localhost:8080/api/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Handle successful upload
+                console.log(
+                  "File uploaded successfully from background:",
+                  data.data
+                );
+
+                // Optionally, update the image source with the uploaded image URL
+                const outputImage = document.getElementById("background");
+                outputImage.src = data.data.fileUrl;
+                fileURLBackGround = data.data.fileUrl;
+              } else {
+                // Handle upload failure
+                console.error("File upload failed:", data);
+              }
+            })
+            .catch((error) => {
+              // Handle network or other errors
+              console.error("Error during file upload:", error);
+            });
+        }
+      }
+
+      async function loadAndUploadFile(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          await fetch("http://localhost:8080/api/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Handle successful upload
+                console.log("File uploaded successfully:", data.data);
+
+                // Optionally, update the image source with the uploaded image URL
+                const outputImage = document.getElementById("output");
+                outputImage.src = data.data.fileUrl;
+                fileURL = data.data.fileUrl;
+              } else {
+                // Handle upload failure
+                console.error("File upload failed:", data);
+              }
+            })
+            .catch((error) => {
+              // Handle network or other errors
+              console.error("Error during file upload:", error);
+            });
+        }
+      }
       async function updateOrchid(event) {
         event.preventDefault();
         const form = document.getElementById("orchidForm");
         const formData = {
           name: form.elements["name"].value,
-          image: form.elements["image"].value,
-          background: form.elements["background"].value,
+          image: fileURL,
+          background: fileURLBackGround,
           nation: form.elements["nation"].value,
           release_date: form.elements["release_date"].value,
           revenue: form.elements["revenue"].value,
@@ -89,13 +281,35 @@
           );
 
           if (response.ok) {
-            console.log("Orchid added successfully!");
+            showSuccessToast();
+            setTimeout(() => {
+              redirectToDashBoard();
+            }, 3000);
           } else {
+            showFailedToast();
             console.error("Failed to add orchid:", response.statusText);
           }
         } catch (error) {
           console.error("Error:", error.message);
         }
+      }
+
+      function redirectToDashBoard() {
+        window.location.href = "/dashboard";
+      }
+      function showSuccessToast() {
+        var x = document.getElementById("snackbar-success");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      }
+      function showFailedToast() {
+        var x = document.getElementById("snackbar-failed");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
       }
     </script>
   </body>

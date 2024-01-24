@@ -5,6 +5,28 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+.skeleton {
+  border-radius: 8px;
+  background-color: hsl(200, 20%, 85%);
+
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
+}
+
+
+
+
+
+
+
+
 
 .container {
   margin-left: auto;
@@ -36,6 +58,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 12px;
+
 }
 .orchid-item img {
   object-fit: cover;
@@ -59,17 +82,22 @@
     font-weight: 600;
     font-size:  18px ;
     line-height:  28px;
+    margin-left: 10px;
 
 }
 .orchid-category{
     font-weight: 300;  
-  color: rgb(211, 35, 220);
+  color: #265EAB;
+  padding-bottom: 10px;
+  margin-left: 10px;
+
 }
-.orchird-revenue-development{
+.orchid-revenue-development{
     display: flex;
     flex-direction: row;
     align-items: center;
     gap:4px;
+    
 }
 
 @media (min-width: 640px) {

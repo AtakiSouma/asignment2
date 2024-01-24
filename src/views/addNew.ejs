@@ -8,57 +8,251 @@
   </head>
   <body>
     <%- include('header.ejs'); -%>
-    <div class="container">
+    <div class="container-form">
       <div class="orchid-add-form">
+        <div class="Title">Create New Games Information</div>
         <form
           method="POST"
           enctype="multipart/form-data"
           onsubmit="uploadOrchid(event)"
           id="orchidForm"
         >
-          <!-- Name -->
-          <label> Name </label>
-          <input type="text" name="name" placeholder="Enter the name" />
-          <!-- Image -->
-          <label> Images </label>
-          <input type="text" name="image" placeholder="Enter the image" />
+          <!--- Images-->
+          <div>
+            <div style="display: flex; flex-direction: column; gap: 20px">
+              <input
+                type="file"
+                accept="image/gif, image/jpeg, image/png"
+                name="image"
+                id="file"
+                style="display: none"
+                onchange="loadAndUploadFile(event)"
+                required
+              />
+              <div><p>Upload for images</p></div>
+              <div class="fileUpload">
+                <label for="file" style="cursor: pointer">
+                  <img
+                    src="https://www.svgrepo.com/show/309379/camera-add.svg"
+                    width="50px"
+                    height="50px"
+                    class="input-icon"
+                  />
+                </label>
+                <div class="fileResult">
+                  <img
+                    id="output"
+                    src="https://static.wixstatic.com/media/fc7570_ae9913d461894a7ebb7fc420d828ab83~mv2.png/v1/fill/w_601,h_338,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Image-empty-state.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Back ground Images -->
-          <label>Back ground</label>
-          <input type="text" name="background" placeholder="Enter the image" />
+          <div>
+            <div style="display: flex; flex-direction: column; gap: 20px">
+              <input
+                type="file"
+                accept="image/gif, image/jpeg, image/png"
+                name="image"
+                id="file-background"
+                style="display: none"
+                onchange="loadAndUploadFileBackground(event)"
+                required
+              />
+              <div><p>Upload for Background images</p></div>
+              <div class="fileUpload">
+                <label for="file-background" style="cursor: pointer">
+                  <img
+                    src="https://www.svgrepo.com/show/309379/camera-add.svg"
+                    width="50px"
+                    height="50px"
+                    class="input-icon"
+                  />
+                </label>
+                <div class="fileResult">
+                  <img
+                    id="background"
+                    src="https://static.wixstatic.com/media/fc7570_ae9913d461894a7ebb7fc420d828ab83~mv2.png/v1/fill/w_601,h_338,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Image-empty-state.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Name -->
+          <div>
+            <label> Name </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter the name"
+              required
+            />
+          </div>
+
           <!-- Nation -->
-          <label>Nation</label>
-          <input type="text" name="nation" />
+
+          <div>
+            <label>Nation</label>
+            <input
+              type="text"
+              name="nation"
+              placeholder="Enter the Nation"
+              required
+            />
+          </div>
+
           <!-- RealseDate -->
-          <label>release_date</label>
-          <input type="date" name="release_date" />
+          <div>
+            <label>release_date</label>
+            <input type="date" name="release_date" required />
+          </div>
+
           <!-- revenue -->
-          <label>revenue</label>
-          <input type="text" name="revenue" />
+          <div>
+            <label>revenue</label>
+            <input
+              type="text"
+              name="revenue"
+              placeholder="Enter the revenue"
+              required
+              pattern="\d+"  
+              oninput="setCustomValidity('')"
+              oninvalid="setCustomValidity('Please enter a valid number')" 
+            />
+          </div>
+
           <!-- rating -->
-          <label>rating</label>
-          <input type="text" name="rating" />
+          <div>
+            <label>rating</label>
+            <input
+              type="text"
+              name="rating"
+              placeholder="Enter the Ratings"
+              required
+              pattern="\d+"  
+              oninput="setCustomValidity('')"
+              oninvalid="setCustomValidity('Please enter a valid number')" 
+            />
+          </div>
+
           <!-- development -->
-          <label>development</label>
-          <input type="text" name="development" />
+          <div>
+            <label>development</label>
+            <input
+              type="text"
+              name="development"
+              placeholder="Enter the development"
+              required
+            />
+          </div>
+
           <!-- category -->
-          <label>Category</label>
-          <select name="category" id="category">
-            <% categories.forEach((data,index) => { %>
-            <option value="<%=data._id%>"><%= data.name%></option>
-            <% }); %>
-          </select>
-          <button type="submit " style="width: 100px">Submit</button>
+          <div
+            class="category-input"
+            style="display: flex; flex-direction: column"
+          >
+            <label>Category</label>
+            <select name="category" id="category">
+              <% categories.forEach((data,index) => { %>
+              <option value="<%=data._id%>"><%= data.name%></option>
+              <% }); %>
+            </select>
+          </div>
+          <div>
+            <input type="hidden" />
+          </div>
+          <div>
+            <button type="submit " id="submitButton" >Submit</button>
+          </div>
         </form>
       </div>
     </div>
+    <div id="snackbar-success">Create Orchid successfully</div>
+    <div id="snackbar-failed">Create Orchid Failed</div>
+
     <script>
+      
+
+      let fileURL = null;
+      let fileURLBackGround = null;
+      async function loadAndUploadFileBackground(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          await fetch("http://localhost:8080/api/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Handle successful upload
+                console.log(
+                  "File uploaded successfully from background:",
+                  data.data
+                );
+
+                // Optionally, update the image source with the uploaded image URL
+                const outputImage = document.getElementById("background");
+                outputImage.src = data.data.fileUrl;
+                fileURLBackGround = data.data.fileUrl;
+              } else {
+                // Handle upload failure
+                console.error("File upload failed:", data);
+              }
+            })
+            .catch((error) => {
+              // Handle network or other errors
+              console.error("Error during file upload:", error);
+            });
+        }
+      }
+
+      async function loadAndUploadFile(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          await fetch("http://localhost:8080/api/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Handle successful upload
+                console.log("File uploaded successfully:", data.data);
+
+                // Optionally, update the image source with the uploaded image URL
+                const outputImage = document.getElementById("output");
+                outputImage.src = data.data.fileUrl;
+                fileURL = data.data.fileUrl;
+              } else {
+                // Handle upload failure
+                console.error("File upload failed:", data);
+              }
+            })
+            .catch((error) => {
+              // Handle network or other errors
+              console.error("Error during file upload:", error);
+            });
+        }
+      }
       async function uploadOrchid(event) {
         event.preventDefault();
         const form = document.getElementById("orchidForm");
         const formData = {
           name: form.elements["name"].value,
-          image: form.elements["image"].value,
-          background: form.elements["background"].value,
+          image: fileURL,
+          background: fileURLBackGround,
           nation: form.elements["nation"].value,
           release_date: form.elements["release_date"].value,
           revenue: form.elements["revenue"].value,
@@ -66,6 +260,7 @@
           development: form.elements["development"].value,
           category: form.elements["category"].value,
         };
+        console.log("form Dtaa", formData);
         try {
           // Make a POST request to your backend API
           const response = await fetch("http://localhost:8080/api/orchids/", {
@@ -78,13 +273,39 @@
           });
 
           if (response.ok) {
+            showSuccessToast();
+            setTimeout(() => {
+              redirectToDashBoard();
+            }, 3000); 
             console.log("Orchid added successfully!");
           } else {
-            console.error("Failed to add orchid:", response.statusText);
+            showFailedToast();
           }
         } catch (error) {
           console.error("Error:", error.message);
         }
+      }
+
+      var loadFile = function (event) {
+        var image = document.getElementById("output");
+        image.src = URL.createObjectURL(event.target.files[0]);
+      };
+      function redirectToDashBoard() {
+        window.location.href = "/dashboard";
+      }
+      function showSuccessToast() {
+        var x = document.getElementById("snackbar-success");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      }
+      function showFailedToast() {
+        var x = document.getElementById("snackbar-failed");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
       }
     </script>
   </body>
