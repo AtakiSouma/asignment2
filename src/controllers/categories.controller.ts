@@ -19,9 +19,9 @@ const CategoriesController = {
         name,
         description,
       });
-     return sendSuccessResponse(res,HttpStatusCodes.OK, category);
+      return sendSuccessResponse(res, HttpStatusCodes.OK, category);
     } catch (error) {
-        console.log(error);
+      console.log(error);
       if (error instanceof CustomError) {
         next(error);
       } else if (error instanceof Error) {
@@ -47,7 +47,8 @@ const CategoriesController = {
         name,
         description,
       });
-      if (updatedCategory) return sendSuccessResponse(res,  HttpStatusCodes.OK,updatedCategory);
+      if (updatedCategory)
+        return sendSuccessResponse(res, HttpStatusCodes.OK, updatedCategory);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);
@@ -59,7 +60,6 @@ const CategoriesController = {
     }
   },
 
-  
   updateCategoryBySlug: async (
     req: Request,
     res: Response,
@@ -67,8 +67,8 @@ const CategoriesController = {
   ) => {
     try {
       const { slug } = req.params;
-      if(!slug){
-        throw generateError("Orchid not found" , HttpStatusCodes.NOT_FOUND)
+      if (!slug) {
+        throw generateError("Orchid not found", HttpStatusCodes.NOT_FOUND);
       }
       const { name, description } = req.body;
       const updatedCategory = await categoriesServices.updateCategoriesBySlug({
@@ -76,7 +76,8 @@ const CategoriesController = {
         name,
         description,
       });
-      if (updatedCategory) return sendSuccessResponse(res, HttpStatusCodes.OK, updatedCategory);
+      if (updatedCategory)
+        return sendSuccessResponse(res, HttpStatusCodes.OK, updatedCategory);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);
@@ -96,7 +97,8 @@ const CategoriesController = {
     try {
       const { id } = req.params;
       const Category = await categoriesServices.getOneCategoryById({ id });
-      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
+      if (Category)
+        return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);
@@ -116,7 +118,8 @@ const CategoriesController = {
     try {
       const { slug } = req.params;
       const Category = await categoriesServices.getOneCategoryBySlug({ slug });
-      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
+      if (Category)
+        return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);
@@ -137,7 +140,8 @@ const CategoriesController = {
       const Category = await categoriesServices.DeleteOneCategoryBySlug({
         slug,
       });
-      if (Category) return sendSuccessResponseWithStatusCode(res, HttpStatusCodes.OK);
+      if (Category)
+        return sendSuccessResponseWithStatusCode(res, HttpStatusCodes.OK);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);
@@ -169,9 +173,14 @@ const CategoriesController = {
   },
   allCategories: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const Category = await categoriesServices.getAllCategories();
-
-      if (Category) return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
+      const { search, limit, page } = req.body;
+      const Category = await categoriesServices.getAllCategories(
+        search,
+        page,
+        limit
+      );
+      if (Category)
+        return sendSuccessResponse(res, HttpStatusCodes.OK, Category);
     } catch (error) {
       if (error instanceof CustomError) {
         next(error);

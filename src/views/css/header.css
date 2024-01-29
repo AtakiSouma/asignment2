@@ -5,10 +5,31 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+.Modal {
+  display: none;
+}
+.Modal.show {
+  display: block;
+}
+:root {
+  --tw-bg-opacity: 1;
+  --secondary-color: rgba(245, 245, 245, var(--tw-bg-opacity));
+  --primary-color: #ffffff;
+  --color-font: #000000;
+  --border-color: #000000;
+}
+.dark_theme {
+  --primary-color: rgba(31, 31, 31, 255);
+  --secondary-color: rgba(0, 0, 0, 255);
+  --color-font: #ffffff;
+  --border-color: #ffffff;
+}
 .navbar {
   position: fixed;
   width: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: var(--primary-color);
+  color: var(--color-font);
   z-index: 10;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -31,6 +52,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+.navbar .navbar-container .container .content img {
+  border-radius: 50%;
 }
 
 .search {
@@ -73,18 +97,17 @@
   text-align: center;
 }
 
-.user-menu {
+/* .user-menu {
   position: relative;
-}
+} */
 .items {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
 }
 .dashboard:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgba(245, 245, 245, var(--tw-bg-opacity));
+  background-color: var(--secondary-color);
 }
 .dashboard {
   font-size: 14px;
@@ -103,7 +126,8 @@
 .icon {
   border-width: 1px;
   --tw-bg-opacity: 1;
-  background-color: rgba(245, 245, 245, var(--tw-bg-opacity));
+  /* background-color: rgba(245, 245, 245, var(--tw-bg-opacity)); */
+  background-color: var(--secondary-color);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -114,6 +138,7 @@
   transition-duration: 0.5s;
   transition-timing-function: ease;
   padding: 7px 14px 7px 14px;
+  position: relative;
 }
 .icon img {
   border-radius: 9999px;
@@ -131,7 +156,9 @@
 
   width: 48vw;
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  /* background-color: rgb(255 255 255 / var(--tw-bg-opacity)); */
+
+  background-color: var(--primary-color);
   overflow: hidden;
   right: 20px;
   top: 80px;
@@ -154,45 +181,60 @@
   font-weight: 500;
   display: flex;
   flex-direction: row;
-  gap:15px;
+  gap: 15px;
 }
 .label-item:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
 }
-.middle-item{
-    border-radius: 9999px !important;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    
+.middle-item {
+  border-radius: 9999px !important;
+  /* light mode*/
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  /*dark modeA*/
+  border: 1px solid var(--border-color);
+  background-color: var(--primary-color);
 }
-.middle-item ul{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap:20px;
+.middle-item ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
-.middle-item ul li{
-    text-decoration: none;
-    list-style: none !important;
-    font-size: 16px;
-    line-height: 20px;
-    cursor: pointer;
-    padding:12px 20px 12px 20px;
+.middle-item ul li {
+  text-decoration: none;
+  list-style: none !important;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  padding: 12px 20px 12px 20px;
 }
-.middle-item ul li:hover{
-    --tw-bg-opacity: 1;
+.middle-item ul li:hover {
+  --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
-    transition-property: all;
-    background-color: #265EAB;
-    transition-duration: 0.5s;
-    transition-timing-function: ease;
-    border-radius: 9999px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color:#ffffff
-
+  transition-property: all;
+  background-color: #265eab;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+  border-radius: 9999px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
 }
+
+/* dark light  mode */
+.dark_light_mode {
+  border: 0.5px solid rgb(207, 207, 207);
+  border-radius: 10px;
+  padding: 8px;
+}
+#icon_dark {
+  cursor: pointer;
+
+  font-size: 20px;
+}
+/* dark mode */
+
 @media (min-width: 1280px) {
   .container {
     padding-left: 80px;
@@ -208,28 +250,25 @@
   .content {
     gap: 0px;
   }
-  .Modal{
+  .Modal {
     width: 20%;
   }
 }
 @media (min-width: 1024px) {
-  .Modal{
+  .Modal {
     width: 20%;
   }
 }
 @media (min-width: 1280px) {
-  .Modal{
+  .Modal {
     width: 15%;
   }
 }
 @media (max-width: 768px) {
-    
-    .dashboard{
-        display: none;
-    }
-    .middle-item{
-        display: none;
-    }
-    
+  .dashboard {
+    display: none;
   }
-
+  .middle-item {
+    display: none;
+  }
+}

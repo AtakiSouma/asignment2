@@ -1,52 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Popup Share Modal | CodingNepal</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
-  <link rel="stylesheet" href="http://localhost:8080/css/modal.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modal Example</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Add some basic styling to the modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
 
-</head>
-<body>
-  <button class="view-modal">View Modal</button>
-  <div class="popup">
-    <header>
-      <span>Share Modal</span>
-      <div class="close"><i class="uil uil-times"></i></div>
-    </header>
-    <div class="content">
-      <p>Share this link via</p>
-      <ul class="icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fab fa-telegram-plane"></i></a>
-      </ul>
-      <p>Or copy link</p>
-      <div class="field">
-        <i class="url-icon uil uil-link"></i>
-        <input type="text" readonly value="example.com/share-link">
-        <button>Copy</button>
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="openModalBtn">Open Modal</button>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>This is some modal content.</p>
       </div>
     </div>
-  </div>
 
-  <script>
-    const viewBtn = document.querySelector(".view-modal"),
-    popup = document.querySelector(".popup"),
-    close = popup.querySelector(".close");
+    <script>
+      // Function to open the modal
+      function openModal() {
+        document.getElementById("modal").style.display = "block";
+      }
 
-    viewBtn.onclick = ()=>{
-      popup.classList.toggle("show");
-    }
-    close.onclick = ()=>{
-      viewBtn.click();
-    }
-  </script>
+      // Function to close the modal
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
 
-</body>
+      // Event listener for the button to open the modal
+      document
+        .getElementById("openModalBtn")
+        .addEventListener("click", openModal);
+    </script>
+  </body>
 </html>

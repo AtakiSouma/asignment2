@@ -53,6 +53,54 @@ export const Orchids = [
     development: "Smilegate , Super Creative",
     category: "65a72feae31ab2758f56adb2",
   },
+
+  {
+    name: "Wuthering-Waves",
+    slug: "wuthering-waves",
+    image:
+      "https://pbs.twimg.com/media/FuX-Pw8aUAA8wuM.jpg",
+    background:
+      "https://cdn.sforum.vn/sforum/wp-content/uploads/2024/01/Wuthering-Waves-2.jpg",
+    nation: "China",
+    release_date: new Date("2018-08-30"),
+    revenue: 60000000,
+    rating: 4,
+    development: "KURO Games",
+    category: "65b3b9263195f210441be574",
+  },
+
+  {
+    name: "Aether Gazer",
+    slug: "aether-gazer",
+    image:
+      "https://images5.alphacoders.com/123/1235223.jpg",
+    background:
+      "https://cdn.gameleap.com/images/articles/art_kfRwy5r5ZQ/art-img_zjFus2nad/1x.webp",
+    nation: "China",
+    release_date: new Date("2018-08-30"),
+    revenue: 90000000,
+    rating: 5,
+    development: "Yostar Games",
+    category: "65b3b92d3195f210441be577",
+  },
+
+
+
+  {
+    name: "AzurLane",
+    slug: "azur-lane",
+    image:
+      "https://m.media-amazon.com/images/I/81m0CXi0hlL._AC_UF1000,1000_QL80_.jpg",
+    background:
+      "https://wallpapers.com/images/hd/azur-lane-background-k7gcu3l9yvzdq7ad.jpg",
+    nation: "China",
+    release_date: new Date("2018-08-30"),
+    revenue: 90000000,
+    rating: 5,
+    development: "Yostar Games",
+    category: "65b3b92d3195f210441be577",
+  },
+
 ];
 
 export default Orchids;

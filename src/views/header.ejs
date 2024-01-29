@@ -21,69 +21,77 @@
     </style>
   </head>
   <body>
-    <div class="navbar">
-      <div class="navbar-container">
-        <div class="container">
-          <div class="content">
-            <!-- logo-->
-            <img
-              src="https://img.freepik.com/premium-photo/minimal-japanese-kawaii-gamer-girl-chibi-anime-vector-art-sticker-with-clean-bold-line-cute-simple_655090-9088.jpg"
-              alt="anime"
-              height="50"
-              width="50"
-              onclick="redirectToHome()"
-              style="cursor: pointer;"
-            />
-            <!-- logo-->
-            <!--- search-->
-            <div class="middle-item">
-              <ul>
-               <a href="/" style="text-decoration: none ;color:black;;" ><li>Home</li></a> 
-                <li>About</li>
-                <li>Favorite</li>
-                <li>Contact</li>
-                <li>News</li>
-              </ul>
-            </div>
+    <div id="content-container">
+      <div class="navbar">
+        <div class="navbar-container">
+          <div class="container">
+            <div class="content">
+              <!-- logo-->
+              <img
+                src="https://img.freepik.com/premium-photo/minimal-japanese-kawaii-gamer-girl-chibi-anime-vector-art-sticker-with-clean-bold-line-cute-simple_655090-9088.jpg"
+                alt="anime"
+                height="50"
+                width="50"
+                onclick="loadHomePageContent()"
+                style="cursor: pointer"
+              />
+              <!-- logo-->
+              <!--- search-->
+              <div class="middle-item">
+                <ul>
+                  <li>Home</li>
+                  <li>About</li>
+                  <li>Favorite</li>
+                  <li>Contact</li>
+                  <li>News</li>
+                </ul>
+              </div>
 
-            <!--- search-->
-            <!--- user menu-->
-            <div class="user-menu" id="user-menu">
-              <div class="items">
-                <div class="dashboard">My DashBoard</div>
-                <div class="icon">
-                  <i class="fa-solid fa-bars"></i>
-                  <img
-                    src="https://styles.redditmedia.com/t5_7zqhir/styles/communityIcon_n395ht1zofxb1.png"
-                  />
+              <!--- search-->
+              <!--- user menu-->
+              <div class="user-menu">
+                <div class="items">
+                  <div class="dark_light_mode">
+                    <i class="fa-solid fa-moon" id="icon_dark"></i>
+                  </div>
+                  <div class="dashboard">My DashBoard</div>
+                  <div class="icon" id="user-menu">
+                    <i class="fa-solid fa-bars"></i>
+                    <img
+                      src="https://styles.redditmedia.com/t5_7zqhir/styles/communityIcon_n395ht1zofxb1.png"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="Modal" id="modal">
-              <div class="label-items">
-                <div class="label-item">
-                  <i class="fa-solid fa-right-to-bracket"></i>
-                <p> Login</p></div>
-                <div class="label-item">
-                  <i class="fa-solid fa-circle-left"></i>
-                 <p>Logout</p> </div>
-                <div class="label-item" onclick="redirectToDashboard()">
-                  <i class="fa-solid fa-table-columns"></i>
-                  
-                  <p>DashBoard</p>
-                </div>
+              <div class="Modal" id="modal">
+                <div class="label-items">
+                  <div class="label-item">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <p>Login</p>
+                  </div>
+                  <div class="label-item">
+                    <i class="fa-solid fa-circle-left"></i>
+                    <p>Logout</p>
+                  </div>
+                  <div class="label-item" onclick="redirectToDashboard()">
+                    <i class="fa-solid fa-table-columns"></i>
 
-                <div class="label-item">
-                  <i class="fa-solid fa-gamepad"></i>
-               <p>  My Games</p> 
+                    <p>DashBoard</p>
+                  </div>
+
+                  <div class="label-item">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <p>My Games</p>
+                  </div>
                 </div>
               </div>
+              <!--- use menu-->
             </div>
-            <!--- use menu-->
           </div>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
       document
         .getElementById("user-menu")
@@ -92,12 +100,59 @@
           modal.classList.toggle("show");
         });
       function redirectToDashboard() {
-        window.location.href = "/dashboard";
-      }
-      function redirectToHome(){
-        window.location.href = "/";
+        $.ajax({
+          type: "GET",
+          url: "/dashboard",
+          success: function (response) {
+            // Replace the content of a specific container with the loaded content
+            document.open();
+            document.write(response);
+            document.close();
 
+            // Update the URL in the address bar
+            var newUrl =
+              window.location.protocol +
+              "//" +
+              window.location.host +
+              "/dashboard";
+            window.history.pushState({ path: newUrl }, "", newUrl);
+          },
+          error: function () {
+            console.log("Error loading home page");
+          },
+        });
       }
+      function loadHomePageContent() {
+        $.ajax({
+          type: "GET",
+          url: "/",
+          success: function (response) {
+            document.open();
+            document.write(response);
+            document.close();
+
+            // Update the URL in the address bar
+            var newUrl =
+              window.location.protocol + "//" + window.location.host + "/";
+            window.history.pushState({ path: newUrl }, "", newUrl);
+          },
+          error: function () {
+            console.log("Error loading home page");
+          },
+        });
+      }
+    </script>
+    <!-- handle Dark Mode + ligh tMode -->
+    <script>
+      var icon_dark = document.getElementById("icon_dark");
+      icon_dark.onclick = function () {
+        document.body.classList.toggle("dark_theme");
+        if (document.body.classList.contains("dark_theme")) {
+          icon_dark.classList.replace("fa-moon", "fa-sun");
+        } else {
+          icon_dark.classList.replace("fa-sun", "fa-moon");
+        }
+      };
     </script>
   </body>
 </html>

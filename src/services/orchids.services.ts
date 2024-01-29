@@ -5,6 +5,8 @@ import { Orchids } from "../models/Orchids";
 import GenerateSlug from "../util/GenerateSlug";
 import DataOrchids from "../data/OrchidData";
 import mongoose from "mongoose";
+import { link } from "joi";
+import { query } from "express";
 interface IOrchids {
   name: string;
   slug: string;
@@ -108,9 +110,50 @@ class OrchidsServices {
     return updateOrchid;
   }
 
-  public async getAllOrchid() {
-    const allOrchid = await Orchids.find().populate("category");
-    return allOrchid;
+  public async getAllOrchid(search: string, page: number, limit: number) {
+    try {
+      const query = {
+        status: true,
+        name: { $regex: new RegExp(search, "i") },
+      };
+      const orchidList = await Orchids.find(query)
+        .populate("category")
+        .sort({ create_at: "desc" })
+        .skip((page - 1) * limit)
+        .limit(limit);
+      const totalCount = await Orchids.countDocuments(query);
+      const data = orchidList.map((orchid) => {
+        const releaseDate = new Date(orchid.release_date);
+        const year = releaseDate.getFullYear();
+        const month = String(releaseDate.getMonth() + 1).padStart(2, "0");
+        const day = String(releaseDate.getDate()).padStart(2, "0");
+
+        return {
+          id: orchid._id,
+          name: orchid.name,
+          status: orchid.status,
+          slug: orchid.slug,
+          image: orchid.image,
+          background: orchid.background,
+          nation: orchid.nation,
+          revenue: orchid.revenue,
+          rating: orchid.rating,
+          development: orchid.development,
+          release_date: `${year}-${month}-${day}`,
+          category: orchid.category,
+        };
+      });
+
+      const response = {
+        data,
+        totalCount,
+        pageCount: Math.ceil(totalCount / limit),
+      };
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw generateError("Cannot get orchids!", HttpStatusCodes.BAD_REQUEST);
+    }
   }
 
   public async getOneOrchid({ slug }: IParam) {
@@ -118,15 +161,34 @@ class OrchidsServices {
     if (!Orchid) {
       throw generateError("Orchid not found!", HttpStatusCodes.NOT_FOUND);
     }
-    return Orchid;
+    const formattedOrchid = {
+      ...Orchid.toObject(), 
+      release_date: formatDate(Orchid.release_date),
+    };
+    return formattedOrchid;
   }
+  
   public async DeleteOneOrchid({ slug }: IParam) {
     const Orchid = await Orchids.findOneAndDelete({ slug: slug });
     if (!Orchid) {
       throw generateError("Orchid not found!", HttpStatusCodes.NOT_FOUND);
     }
+
+   
     return HttpStatusCodes.OK;
   }
 }
 
 export default new OrchidsServices();
+
+
+
+
+function formatDate(date: Date): string {
+  const releaseDate = new Date(date);
+  const year = releaseDate.getFullYear();
+  const month = String(releaseDate.getMonth() + 1).padStart(2, "0");
+  const day = String(releaseDate.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}

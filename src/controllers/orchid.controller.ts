@@ -9,32 +9,23 @@ import {
 } from "../constants/successResponse";
 import orchidsServices from "../services/orchids.services";
 const OrchidsController = {
-    importOrchids: async (req: Request, res: Response, next: NextFunction) => {
-        try {
-          const orchids = await orchidsServices.importOrchids();
-          return sendSuccessResponse(res, HttpStatusCodes.OK, orchids);
-        } catch (error) {
-          console.log(error);
-          if (error instanceof CustomError) {
-            next(error);
-          } else if (error instanceof Error) {
-            next(error.message);
-          } else {
-            next(error);
-          }
-        }
-      },
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    createOrchids: async (req: Request, res: Response, next: NextFunction) => {
+  importOrchids: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const orchids = await orchidsServices.importOrchids();
+      return sendSuccessResponse(res, HttpStatusCodes.OK, orchids);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof CustomError) {
+        next(error);
+      } else if (error instanceof Error) {
+        next(error.message);
+      } else {
+        next(error);
+      }
+    }
+  },
+
+  createOrchids: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {
         name,
@@ -89,8 +80,8 @@ const OrchidsController = {
   updateOrchids: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const slug = req.params.slug;
-      if(!slug){
-        throw generateError("Orchid is required", HttpStatusCodes.NOT_FOUND)
+      if (!slug) {
+        throw generateError("Orchid is required", HttpStatusCodes.NOT_FOUND);
       }
       const {
         name,
@@ -131,7 +122,12 @@ const OrchidsController = {
 
   getAllOrchids: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newOrchids = await orchidsServices.getAllOrchid();
+      const { search, page, limit } = req.body;
+      const newOrchids = await orchidsServices.getAllOrchid(
+        search,
+        page,
+        limit
+      );
       return sendSuccessResponse(res, HttpStatusCodes.OK, newOrchids);
     } catch (error) {
       console.log(error);
@@ -147,8 +143,8 @@ const OrchidsController = {
 
   getOneOrchids: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const  slug  = req.params.slug;
-      const newOrchids = await orchidsServices.getOneOrchid({slug});
+      const slug = req.params.slug;
+      const newOrchids = await orchidsServices.getOneOrchid({ slug });
       return sendSuccessResponse(res, HttpStatusCodes.OK, newOrchids);
     } catch (error) {
       console.log(error);
@@ -164,8 +160,8 @@ const OrchidsController = {
 
   deleteOrchid: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const  slug  = req.params.slug;
-      await orchidsServices.DeleteOneOrchid({slug})
+      const slug = req.params.slug;
+      await orchidsServices.DeleteOneOrchid({ slug });
       return sendSuccessResponseWithStatusCode(res, HttpStatusCodes.OK);
     } catch (error) {
       console.log(error);

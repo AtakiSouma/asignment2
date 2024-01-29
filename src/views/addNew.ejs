@@ -18,7 +18,7 @@
           id="orchidForm"
         >
           <!--- Images-->
-          <div>
+          <div class="form-group">
             <div style="display: flex; flex-direction: column; gap: 20px">
               <input
                 type="file"
@@ -27,7 +27,6 @@
                 id="file"
                 style="display: none"
                 onchange="loadAndUploadFile(event)"
-                required
               />
               <div><p>Upload for images</p></div>
               <div class="fileUpload">
@@ -50,7 +49,7 @@
           </div>
 
           <!-- Back ground Images -->
-          <div>
+          <div class="form-group">
             <div style="display: flex; flex-direction: column; gap: 20px">
               <input
                 type="file"
@@ -59,7 +58,6 @@
                 id="file-background"
                 style="display: none"
                 onchange="loadAndUploadFileBackground(event)"
-                required
               />
               <div><p>Upload for Background images</p></div>
               <div class="fileUpload">
@@ -82,70 +80,64 @@
           </div>
 
           <!-- Name -->
-          <div>
+          <div class="form-group">
             <label> Name </label>
             <input
               type="text"
               name="name"
+              id="name"
               placeholder="Enter the name"
-              required
             />
           </div>
 
           <!-- Nation -->
 
-          <div>
+          <div class="form-group">
             <label>Nation</label>
             <input
               type="text"
               name="nation"
+              id="nation"
               placeholder="Enter the Nation"
-              required
             />
           </div>
 
           <!-- RealseDate -->
-          <div>
+          <div class="form-group">
             <label>release_date</label>
-            <input type="date" name="release_date" required />
+            <input type="date" name="release_date" id="release_date" />
           </div>
 
           <!-- revenue -->
-          <div>
+          <div class="form-group">
             <label>revenue</label>
             <input
               type="text"
               name="revenue"
               placeholder="Enter the revenue"
-              required
-              pattern="\d+"  
-              oninput="setCustomValidity('')"
-              oninvalid="setCustomValidity('Please enter a valid number')" 
+              id="revenue"
             />
           </div>
 
           <!-- rating -->
-          <div>
+          <div class="form-group">
             <label>rating</label>
             <input
               type="text"
               name="rating"
+              id="rating"
               placeholder="Enter the Ratings"
-              required
-              pattern="\d+"  
-              oninput="setCustomValidity('')"
-              oninvalid="setCustomValidity('Please enter a valid number')" 
             />
           </div>
 
           <!-- development -->
-          <div>
+          <div class="form-group">
             <label>development</label>
             <input
               type="text"
               name="development"
+              id="development"
               placeholder="Enter the development"
-              required
             />
           </div>
 
@@ -157,7 +149,7 @@
             <label>Category</label>
             <select name="category" id="category">
               <% categories.forEach((data,index) => { %>
-              <option value="<%=data._id%>"><%= data.name%></option>
+              <option value="<%=data.id%>"><%= data.name%></option>
               <% }); %>
             </select>
           </div>
@@ -165,17 +157,18 @@
             <input type="hidden" />
           </div>
           <div>
-            <button type="submit " id="submitButton" >Submit</button>
+            <button type="submit " id="submitButton">Submit</button>
           </div>
         </form>
       </div>
     </div>
-    <div id="snackbar-success">Create Orchid successfully</div>
-    <div id="snackbar-failed">Create Orchid Failed</div>
+    <div id="snackbar-failed">
+      <i class="fa-solid fa-circle-xmark"></i>
+      Create Orchid failed
+    </div>
+    <%- include('footer.ejs'); -%>
 
     <script>
-      
-
       let fileURL = null;
       let fileURLBackGround = null;
       async function loadAndUploadFileBackground(event) {
@@ -248,7 +241,63 @@
       }
       async function uploadOrchid(event) {
         event.preventDefault();
+
+        const nameInput = document.getElementById("name");
+        const nationInput = document.getElementById("nation");
+        const release_dateInput = document.getElementById("release_date");
+        const revenueInput = document.getElementById("revenue");
+        const ratingInput = document.getElementById("rating");
+        const developmentInput = document.getElementById("development");
+
+        const fileImage = document.getElementById("file");
+        const fileBackground = document.getElementById("file-background");
+
+        const name = nameInput.value;
+        const nation = nationInput.value;
+        const release_date = release_dateInput.value;
+        const revenue = revenueInput.value;
+        const rating = ratingInput.value;
+        const development = developmentInput.value;
+
+        const numberPattern = /^[0-9]+$/;
+        const ratingPattern = /^[1-5]$/;
+
+        document
+          .querySelectorAll(".form-group .error")
+          .forEach((field) => field.classList.remove("error"));
+        document
+          .querySelectorAll(".error-text")
+          .forEach((errorText) => errorText.remove());
+        if (name === "") {
+          showError(nameInput, "Enter the Name of Games");
+        }
+        if (nation === "") {
+          showError(nationInput, " Enter the nation");
+        }
+        if (release_date === "") {
+          showError(release_dateInput, "Enter the Release Date");
+        }
+        if (!numberPattern.test(revenue)) {
+          showError(revenueInput, "Enter the revenue with Number");
+        }
+        if (!ratingPattern.test(rating)) {
+          showError(ratingInput, "Enter the rating from 1 - 5 star");
+        }
+        if (development === "") {
+          showError(developmentInput, "Enter the development");
+        }
+        if (!fileImage.files.length) {
+          showError(fileImage, "Select an image file");
+        }
+
+        if (!fileBackground.files.length) {
+          showError(fileBackground, "Select a background file");
+        }
+        const errorInputs = document.querySelectorAll(".form-group .error");
+        if (errorInputs.length > 0) return; /*  */
+
         const form = document.getElementById("orchidForm");
+
         const formData = {
           name: form.elements["name"].value,
           image: fileURL,
@@ -260,7 +309,7 @@
           development: form.elements["development"].value,
           category: form.elements["category"].value,
         };
-        console.log("form Dtaa", formData);
+        console.log(formData);
         try {
           // Make a POST request to your backend API
           const response = await fetch("http://localhost:8080/api/orchids/", {
@@ -273,10 +322,10 @@
           });
 
           if (response.ok) {
-            showSuccessToast();
+            loadHomePageContent();
             setTimeout(() => {
-              redirectToDashBoard();
-            }, 3000); 
+              showCreateToastSucessss();
+            }, 500);
             console.log("Orchid added successfully!");
           } else {
             showFailedToast();
@@ -290,10 +339,7 @@
         var image = document.getElementById("output");
         image.src = URL.createObjectURL(event.target.files[0]);
       };
-      function redirectToDashBoard() {
-        window.location.href = "/dashboard";
-      }
-      function showSuccessToast() {
+      function showCreateToastSucessss() {
         var x = document.getElementById("snackbar-success");
         x.className = "show";
         setTimeout(function () {
@@ -307,6 +353,38 @@
           x.className = x.className.replace("show", "");
         }, 3000);
       }
+      function loadHomePageContent() {
+        $.ajax({
+          type: "GET",
+          url: "/dashboard",
+          success: function (response) {
+            // Replace the content of a specific container with the loaded content
+            document.open();
+            document.write(response);
+            document.close();
+
+            // Update the URL in the address bar
+            var newUrl =
+              window.location.protocol +
+              "//" +
+              window.location.host +
+              "/dashboard";
+            window.history.pushState({ path: newUrl }, "", newUrl);
+          },
+          error: function () {
+            console.log("Error loading home page");
+          },
+        });
+      }
+
+      /// Show Errror
+      const showError = (field, errorText) => {
+        field.classList.add("error");
+        const errorElement = document.createElement("small");
+        errorElement.classList.add("error-text");
+        errorElement.innerText = errorText;
+        field.closest(".form-group").appendChild(errorElement);
+      };
     </script>
   </body>
 </html>

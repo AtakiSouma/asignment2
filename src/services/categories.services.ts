@@ -1,6 +1,7 @@
 import HttpStatusCodes from "../constants/HttpStatusCodes";
 import { generateError } from "../libs/handlers/errorsHandlers";
 import { Categories } from "../models/Categories";
+import { Orchids } from "../models/Orchids";
 import GenerateSlug from "../util/GenerateSlug";
 
 interface IdParams {
@@ -81,15 +82,11 @@ class CategoriesServices {
     const existCategory = await Categories.findOne({
       slug: slug,
     });
-    if (!existCategory) {
-      throw generateError(`Category not found!`, HttpStatusCodes.NOT_FOUND);
+    if (existCategory) {
+      existCategory.name = name || existCategory.name;
+      existCategory.description = description || existCategory.description;
     }
-    const updatedCategory = await Categories.findOneAndUpdate(
-      {slug : slug},
-      {
-      name: name,
-      description: description,
-    });
+    const updatedCategory = await existCategory?.save();
     return updatedCategory;
   }
 
@@ -138,9 +135,37 @@ class CategoriesServices {
     });
     return true;
   }
-  public async getAllCategories() {
-    const allCategories = await Categories.find();
-    return allCategories;
+  public async getAllCategories(search: string, page: number, limit: number) {
+    // const allCategories = await Categories.find();
+    // return allCategories;
+    try {
+      const query = {
+        status: true,
+        name: { $regex: new RegExp(search, "i") },
+      };
+      const categoryList = await Categories.find(query)
+        .sort({ create_at: "desc" })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+      const totalCount = await Categories.countDocuments(query);
+      const data = categoryList.map((category) => ({
+        id: category._id,
+        name: category.name,
+        status: category.status,
+        slug: category.slug,
+        description: category.description,
+      }));
+      const response = {
+        data,
+        totalCount,
+        pageCount: Math.ceil(totalCount / limit),
+      };
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw generateError("Cannot get category!", HttpStatusCodes.BAD_REQUEST);
+    }
   }
 }
 

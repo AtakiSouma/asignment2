@@ -9,17 +9,17 @@
   <body>
     <%- include('header.ejs'); -%>
 
-    <div class="container">
+    <div class="container-orchid">
       <div class="orchid-items">
         <% orchid.forEach((data,index) => { %>
         <div class="custom-grid">
-          <div class="items-all skeleton">
+          <div class="items-all">
             <div class="orchid-item">
-              <a href="orchid/<%=data.slug%>">
+              <a href="#" class="orchid-link" data-slug="<%= data.slug %>">
                 <image src="<%=data.image %>" />
               </a>
 
-              <div class="star-icon skeleton">
+              <div class="star-icon">
                 <i class="fa-sharp fa-solid fa-star"></i>
               </div>
             </div>
@@ -30,12 +30,33 @@
         <% }); %>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const skeletonImage = document.getElementById("skeletonImage");
-
-        // Add the 'skeleton' class after the page has fully loaded
-        skeletonImage.classList.add("skeleton");
+      $(document).ready(function () {
+        $(".orchid-link").click(function (e) {
+          e.preventDefault();
+          var slug = $(this).data("slug");
+          $.ajax({
+            type: "GET",
+            url: "/orchid/" + slug,
+            success: function (response) {
+              // $(".orchid-items").html(response);
+              document.open();
+              document.write(response);
+              document.close();
+              var newUrl =
+                window.location.protocol +
+                "//" +
+                window.location.host +
+                "/orchid/" +
+                slug;
+              window.history.pushState({ path: newUrl }, "", newUrl);
+            },
+            error: function () {
+              console.log("Error loading orchid detail");
+            },
+          });
+        });
       });
     </script>
   </body>

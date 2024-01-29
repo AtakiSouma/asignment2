@@ -170,17 +170,20 @@
           <div style="display: flex; gap: 30px">
             <button type="submit" style="width: 100px">Update</button>
 
-            <a href="/dashboard">
-              <button style="width: 100px; background-color: #878484">
-                Cancel
-              </button>
-            </a>
+            <button
+              style="
+                width: 100px;
+                background-color: #878484;
+                border-color: azure;
+                color: white;
+              "
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
     </div>
-    <div id="snackbar-success">Update Orchid successfully</div>
-    <div id="snackbar-failed">Update Orchid Failed</div>
     <script>
       let fileURL = "<%= data.image%>";
       let fileURLBackGround = "<%= data.background%>";
@@ -281,10 +284,10 @@
           );
 
           if (response.ok) {
-            showSuccessToast();
+            redirectToDashBoard();
             setTimeout(() => {
-              redirectToDashBoard();
-            }, 3000);
+              showUpdateSuccessToast();
+            }, 500);
           } else {
             showFailedToast();
             console.error("Failed to add orchid:", response.statusText);
@@ -295,10 +298,30 @@
       }
 
       function redirectToDashBoard() {
-        window.location.href = "/dashboard";
+        $.ajax({
+          type: "GET",
+          url: "/dashboard",
+          success: function (response) {
+            // Replace the content of a specific container with the loaded content
+            document.open();
+            document.write(response);
+            document.close();
+
+            // Update the URL in the address bar
+            var newUrl =
+              window.location.protocol +
+              "//" +
+              window.location.host +
+              "/dashboard";
+            window.history.pushState({ path: newUrl }, "", newUrl);
+          },
+          error: function () {
+            console.log("Error loading home page");
+          },
+        });
       }
-      function showSuccessToast() {
-        var x = document.getElementById("snackbar-success");
+      function showUpdateSuccessToast() {
+        var x = document.getElementById("snackbar-success-update");
         x.className = "show";
         setTimeout(function () {
           x.className = x.className.replace("show", "");
