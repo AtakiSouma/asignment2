@@ -191,33 +191,64 @@
         }
       }
 
-      const viewBtnsDahsbaord = document.querySelectorAll(".view-modal");
-      const popups = document.querySelectorAll(".popup");
-      const closeBtns = document.querySelectorAll(".close");
-      const noBtns = document.querySelectorAll(".no");
-      const overlay = document.getElementById("overlay");
+      // const viewBtnsDahsbaord = document.querySelectorAll(".view-modal");
+      // const popups = document.querySelectorAll(".popup");
+      // const closeBtns = document.querySelectorAll(".close");
+      // const noBtns = document.querySelectorAll(".no");
+      // const overlay = document.getElementById("overlay");
 
-      viewBtnsDahsbaord.forEach((btn, index) => {
-        btn.onclick = () => {
-          popups[index].classList.toggle("show");
-          overlay.classList.toggle("show");
-        };
-      });
+      // viewBtnsDahsbaord.forEach((btn, index) => {
+      //   btn.onclick = () => {
+      //     popups[index].classList.toggle("show");
+      //     overlay.classList.toggle("show");
+      //   };
+      // });
 
-      closeBtns.forEach((close, index) => {
-        close.onclick = () => {
-          popups[index].classList.remove("show");
-          overlay.classList.remove("show");
-        };
-      });
-      noBtns.forEach((close, index) => {
-        close.onclick = () => {
-          popups[index].classList.remove("show");
-          overlay.classList.remove("show");
-        };
-      });
+      // closeBtns.forEach((close, index) => {
+      //   close.onclick = () => {
+      //     popups[index].classList.remove("show");
+      //     overlay.classList.remove("show");
+      //   };
+      // });
+      // noBtns.forEach((close, index) => {
+      //   close.onclick = () => {
+      //     popups[index].classList.remove("show");
+      //     overlay.classList.remove("show");
+      //   };
+      // });
+      function initializeModal() {
+        const viewBtnsDashboard = document.querySelectorAll(".view-modal");
+        const popups = document.querySelectorAll(".popup");
+        const closeBtns = document.querySelectorAll(".close");
+        const noBtns = document.querySelectorAll(".no");
+        const overlay = document.getElementById("overlay");
 
-      // end handle modal
+        viewBtnsDashboard.forEach((btn, index) => {
+          btn.onclick = () => {
+            popups[index].classList.toggle("show");
+            overlay.classList.toggle("show");
+          };
+        });
+
+        closeBtns.forEach((close, index) => {
+          close.onclick = () => {
+            popups[index].classList.remove("show");
+            overlay.classList.remove("show");
+          };
+        });
+
+        noBtns.forEach((close, index) => {
+          close.onclick = () => {
+            popups[index].classList.remove("show");
+            overlay.classList.remove("show");
+          };
+        });
+      }
+
+      // Call the function to initialize the modal behavior
+      initializeModal();
+
+      // modal
 
       function showSuccessToast() {
         var x = document.getElementById("snackbar");
